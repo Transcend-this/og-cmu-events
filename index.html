@@ -80,8 +80,8 @@ footer details{margin-top:8px}
 
 <main><div class="wrap">
 <div class="panel" id="cmuPanel">
-<h2>Central Methodist cheer: what's known</h2>
-<div>CMU's 2026-27 competition schedule isn't posted yet. Their season usually runs January to April and ends at the NCA College Nationals in Daytona Beach, Fla. Recent results are in the list below (choose <b>Everything (incl. past)</b>).</div>
+<h2>Central Methodist cheer &amp; STUNT</h2>
+<div id="cmuText"></div>
 <ul>
 <li><a href="https://cmueagles.prestosports.com/sports/cheer/headlines-featured" target="_blank" rel="noopener">CMU Competitive Cheer news and results</a></li>
 <li><a href="https://cmueagles.prestosports.com/sports/stunt/headlines-featured" target="_blank" rel="noopener">CMU STUNT news and results</a></li>
@@ -92,19 +92,20 @@ footer details{margin-top:8px}
 </div></main>
 
 <footer><div class="wrap">
-<b>Panthers &amp; Eagles <span id="ver"></span></b> · Snapshot, not live: always confirm with the source before driving to an event.
+<b>Panthers &amp; Eagles <span id="ver"></span></b> · Refreshed nightly from the schools' public calendars; always confirm with the source before driving to an event.
 Sources: <a href="https://websites.eventlink.com/s/oak-grove-high-school/Events" target="_blank" rel="noopener">Oak Grove district activities calendar (EventLink)</a> ·
 <a href="https://cmueagles.prestosports.com/sports/cheer/headlines-featured" target="_blank" rel="noopener">CMU Athletics</a>.
 Not affiliated with either school.
 <details><summary>How this works, and tests</summary>
-<p>Events were copied from each school's public pages into this page on the date shown at the top. Oak Grove times are Central time. "(H)" = home, "(A)" = away, as the district lists them. Middle-school cheer listed at two gyms for Nov 30 is shown once with both places. Version 2 will refresh automatically each night.</p>
+<p>Every night a GitHub job reads Oak Grove's EventLink calendar (about 45 days ahead) and Central Methodist's cheer and STUNT calendar feeds, then updates this page's data. If a source can't be read, the last good copy is kept. All times are Central. "Home" and "Away" follow the district's (H) and (A) marks. An event listed twice at two places is shown once with both.</p>
 <p id="tests"></p>
 </details>
 </div></footer>
 
 <script>
 /* VERSION: change these two lines for each release, and add a line to CHANGELOG.md */
-const APP_VERSION='1.0', SNAPSHOT='November 24, 2026, 11 PM CT', SNAP_THROUGH='2026-12-08';
+const APP_VERSION='2.0';
+let SNAPSHOT='November 24, 2026, 11 PM CT', SNAP_THROUGH='2026-12-08', LIVE=false; // built-in copy; replaced by data/events.json when it loads
 const OG_URL='https://websites.eventlink.com/s/oak-grove-high-school/Events';
 const CMU_CHEER='https://cmueagles.prestosports.com/sports/cheer/headlines-featured';
 const CMU_STUNT='https://cmueagles.prestosports.com/sports/stunt/headlines-featured';
@@ -170,14 +171,12 @@ const RAW=[
 ['2026-12-08','','Lafayette Co. High Tournament','sports','hs','Basketball · Girls varsity','A','Lafayette Co. High','og'],
 ['2026-12-08','','Richmond High School Tournament','sports','hs','Basketball · Boys C team','A','Richmond High School','og'],
 ['2026-12-08','09:00','Elementary music practice','arts','other','Elementary','','Performing Arts Center','og'],
-// Central Methodist (past season results; 2026-27 schedule not yet posted)
-['2026-02-06','','Quincy Kickoff Tournament: beat St. Norbert 10-0; lost to Quincy 20-19 (3OT)','cheer','college','CMU STUNT','A','Quincy, Ill.','cmu',CMU_STUNT],
-['2026-02-07','','Quincy Kickoff Tournament: beat Buena Vista 8-0','cheer','college','CMU STUNT','A','Quincy, Ill.','cmu',CMU_STUNT],
-['2026-02-21','all','CMU STUNT home tournament vs Drury, Maryville, Missouri Valley (Feb 21-22)','cheer','college','CMU STUNT','H','Puckett Field House, Fayette','cmu',CMU_STUNT],
-['2026-04-10','all','NCA Collegiate Cheer National Championship: 2nd in Intermediate Small Coed NAIA finals','cheer','college','CMU Competitive Cheer','A','Daytona Beach, Fla.','cmu','https://cmueagles.com/sports/cheer/2025-26/releases/20260412feo0er'],
-['2026-04-17','all','College STUNT National Championship (Apr 17-19)','cheer','college','CMU STUNT','A','Oklahoma','cmu',CMU_STUNT]
+// Central Methodist 2026-27 (from CMU's cheer calendar feed)
+['2027-04-08','all','NCA National Championships - Intermediate Small Coed NAIA Preliminaries','cheer','college','CMU Competitive Cheer','','Daytona Beach, Fla.','cmu',CMU_CHEER],
+['2027-04-09','all','NCA National Championships - Intermediate Small Coed NAIA Finals','cheer','college','CMU Competitive Cheer','','Daytona Beach, Fla.','cmu',CMU_CHEER]
 ];
-const EVENTS=RAW.map((r,i)=>({id:i,date:r[0],time:r[1],title:r[2],cat:r[3],lvl:r[4],team:r[5],ha:r[6],loc:r[7],src:r[8],url:r[9]||(r[8]==='og'?OG_URL:CMU_CHEER)}));
+const toEvents=rows=>rows.map((r,i)=>({id:i,date:r[0],time:r[1],title:r[2],cat:r[3],lvl:r[4],team:r[5],ha:r[6],loc:r[7],src:r[8],url:r[9]||(r[8]==='og'?OG_URL:CMU_CHEER)}));
+let EVENTS=toEvents(RAW);
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -205,7 +204,7 @@ function visible(today){
 function render(){
   const today=nowCT(), L=visible(today);
   $('#count').textContent=`${L.length} event${L.length===1?'':'s'} shown · Oak Grove listings run through ${fmtDay(SNAP_THROUGH)}`;
-  if(!L.length){$('#list').innerHTML=`<div class="empty">Nothing matches.${state.src==='cmu'&&state.when!=='all'?' CMU has no 2026-27 dates posted yet. Choose "Everything (incl. past)" to see last season.':' Try fewer filters.'}</div>`;return}
+  if(!L.length){$('#list').innerHTML=`<div class="empty">Nothing matches. Try fewer filters, or choose a wider date range.</div>`;return}
   let html='',last='';
   for(const e of L){
     if(e.date!==last){html+=`<div class="day">${fmtDay(e.date)}${e.date===today?' <small>Today</small>':''}</div>`;last=e.date}
@@ -249,7 +248,20 @@ $('#q').addEventListener('input',e=>{state.q=e.target.value;render()});
 $('#list').addEventListener('click',ev=>{const b=ev.target.closest('.ical');if(!b)return;const e=EVENTS[+b.dataset.id];download(`event-${e.date}.ics`,ics([e]),'text/calendar')});
 $('#icsAll').addEventListener('click',()=>{const L=visible(nowCT());if(L.length)download('panthers-eagles.ics',ics(L),'text/calendar')});
 $('#csv').addEventListener('click',()=>download(`panthers-eagles-${nowCT()}.csv`,csv(visible(nowCT())),'text/csv'));
-$('#asof').textContent=`Snapshot taken ${SNAPSHOT}. Oak Grove: ${EVENTS.filter(e=>e.src==='og').length} listings. CMU: last season's results; 2026-27 dates not yet posted.`;
+function renderHeader(){
+  const og=EVENTS.filter(e=>e.src==='og').length, today=nowCT(), cm=EVENTS.filter(e=>e.src==='cmu'&&e.date>=today);
+  $('#asof').textContent=`${LIVE?'Updated':'Built-in copy from'} ${SNAPSHOT}${LIVE?' (refreshes every night)':''}. Oak Grove: ${og} listings. CMU: ${cm.length} upcoming date${cm.length===1?'':'s'}.`;
+  $('#cmuText').innerHTML=cm.length?`${cm.length} 2026-27 date${cm.length===1?'':'s'} posted so far. Next: <b>${esc(fmtDay(cm[0].date))}</b>, ${esc(cm[0].title)}${cm[0].loc?', '+esc(cm[0].loc):''}. Their competition season usually runs January to April; new dates appear here the night after CMU posts them.`:`No upcoming CMU dates are posted right now. Their competition season usually runs January to April and ends at the NCA College Nationals in Daytona Beach, Fla.`;
+}
+function applyData(d){
+  if(!d||!Array.isArray(d.events)||!d.events.length)return false;
+  EVENTS=toEvents(d.events);LIVE=true;
+  if(d.generated)SNAPSHOT=new Date(d.generated).toLocaleString('en-US',{timeZone:'America/Chicago',month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'})+' CT';
+  if(d.through)SNAP_THROUGH=d.through;
+  renderHeader();render();return true;
+}
+async function loadLive(){try{const r=await fetch('data/events.json',{cache:'no-store'});if(r.ok)applyData(await r.json())}catch(e){}}
+renderHeader();
 $('#ver').textContent=APP_VERSION;
 
 // ---- built-in tests ----
@@ -268,7 +280,7 @@ function runTests(){
   $('#tests').textContent=`${pass} of ${T.length} tests passing`+(pass<T.length?': FAILED '+T.filter(x=>!x[1]).map(x=>x[0]).join('; '):'.');
   return T;
 }
-render();window.__tests=runTests();
+render();window.__tests=runTests();window.__ready=loadLive();
 </script>
 </body>
 </html>

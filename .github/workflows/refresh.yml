@@ -1,0 +1,43 @@
+name: Nightly refresh
+on:
+  schedule:
+    - cron: '17 10 * * *'   # 4:17 AM CST / 5:17 AM CDT every day
+  workflow_dispatch: {}       # "Run workflow" button on the Actions tab
+  push:
+    branches: [main]
+    paths: ['scripts/**', '.github/workflows/refresh.yml']
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Read the school calendars
+        run: node scripts/refresh.js
+      - name: Run all tests (nothing is saved if any fail)
+        run: cd tests && npm install --no-audit --no-fund && node run_tests.js
+      - name: Save new data
+        run: |
+          git config user.name "refresh-bot"
+          git config user.email "refresh-bot@users.noreply.github.com"
+          git add data/events.json
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Nightly data refresh"
+          git pull --rebase --quiet
+          git push
+          echo "changed=yes" >> "$GITHUB_OUTPUT"
+        id: save
+      - name: Ask GitHub Pages to publish the new data
+        if: steps.save.outputs.changed == 'yes'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages will publish on its own"
