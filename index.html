@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panthers &amp; Eagles: Oak Grove activities + CMU cheer</title>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#f7f7f5,#111417);--card:light-dark(#fff,#1a1f24);--ink:light-dark(#16191c,#e8ecef);--mute:light-dark(#5b6670,#9aa6b0);--line:light-dark(#e1e4e8,#2a323a);--og:light-dark(#c2410c,#fb923c);--ogbg:light-dark(#fff1e8,#2a1a10);--cmu:light-dark(#1e3a8a,#93b4ff);--cmubg:light-dark(#eaf0ff,#141d33);--cheer:light-dark(#9d174d,#f9a8d4)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+header{background:linear-gradient(135deg,#111 0%,#3a1a06 55%,#14275e 100%);color:#fff;padding:26px 0 20px}
+header h1{margin:0 0 4px;font-size:clamp(24px,4vw,34px);letter-spacing:-.01em}
+header p{margin:0;color:#e5e7eb;max-width:70ch}
+.asof{margin-top:10px;font-size:13px;color:#cbd5e1}
+.controls{position:sticky;top:0;z-index:4;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row+.row{margin-top:8px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 13px;font:inherit;font-size:14px;cursor:pointer;min-height:38px}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+input[type=search]{flex:1 1 200px;font:inherit;font-size:15px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);min-height:38px}
+select{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);min-height:38px}
+.btn{font:inherit;font-size:14px;font-weight:600;border:0;border-radius:10px;padding:8px 13px;background:var(--ink);color:var(--bg);cursor:pointer;min-height:38px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+main{padding:14px 0 40px}
+.count{color:var(--mute);font-size:14px;margin:4px 0 10px}
+.day{margin:18px 0 6px;font-weight:700;font-size:15px;display:flex;gap:8px;align-items:baseline}
+.day small{color:var(--mute);font-weight:500}
+.ev{display:grid;grid-template-columns:78px 1fr auto;gap:12px;align-items:start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--og);border-radius:12px;padding:10px 12px;margin:6px 0}
+.ev.cmu{border-left-color:var(--cmu)}
+.ev.past{opacity:.55}
+.t{font-weight:700;font-size:14px;white-space:nowrap}
+.ti{font-weight:650}
+.meta{font-size:13.5px;color:var(--mute)}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.tag{font-size:12px;font-weight:600;border-radius:6px;padding:1px 7px;background:var(--ogbg);color:var(--og)}
+.tag.cmu{background:var(--cmubg);color:var(--cmu)}
+.tag.cheer{background:light-dark(#fde7f1,#3a1324);color:var(--cheer)}
+.tag.h{background:light-dark(#e7f6ec,#11271a);color:light-dark(#166534,#86efac)}
+.ical{font-size:13px;background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:5px 9px;cursor:pointer;white-space:nowrap}
+.panel{background:var(--cmubg);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:16px 0}
+.panel h2{margin:0 0 6px;font-size:18px;color:var(--cmu)}
+.panel ul{margin:6px 0 0;padding-left:18px}
+.panel li{margin:3px 0}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:18px;color:var(--mute);text-align:center}
+a{color:inherit}
+footer{border-top:1px solid var(--line);color:var(--mute);font-size:13px;padding:16px 0 30px}
+footer details{margin-top:8px}
+@media (max-width:560px){.controls{position:static}.ev{grid-template-columns:62px 1fr}.ev .ical{grid-column:2;justify-self:start}}
+@media print{.controls,.ical,footer details{display:none}.ev{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Panthers &amp; Eagles</h1>
+<p>Oak Grove (Mo.) High School district activities and Central Methodist University cheer, in one list.</p>
+<div class="asof" id="asof"></div>
+</div></header>
+
+<div class="controls"><div class="wrap">
+<div class="row" id="srcRow">
+<button class="chip" data-src="all" aria-pressed="true">Everything</button>
+<button class="chip" data-src="og" aria-pressed="false">Oak Grove</button>
+<button class="chip" data-src="cmu" aria-pressed="false">CMU cheer &amp; STUNT</button>
+<button class="chip" data-src="cheer" aria-pressed="false">All cheer</button>
+</div>
+<div class="row">
+<select id="cat" aria-label="Type of activity"><option value="">All types</option><option value="sports">Sports</option><option value="cheer">Cheer</option><option value="arts">Band &amp; choir</option><option value="academic">Academic</option><option value="school">School &amp; elementary</option></select>
+<select id="lvl" aria-label="Level"><option value="">All levels</option><option value="hs">High school</option><option value="ms">Middle school</option><option value="college">College</option></select>
+<select id="ha" aria-label="Home or away"><option value="">Home &amp; away</option><option value="H">Home only</option><option value="A">Away only</option></select>
+<select id="when" aria-label="Date range"><option value="up">Upcoming</option><option value="week">Next 7 days</option><option value="all">Everything (incl. past)</option></select>
+<input type="search" id="q" placeholder="Search: Moberly, wrestling, Winnetonka…">
+</div>
+<div class="row">
+<button class="btn" id="icsAll">Add shown to calendar (.ics)</button>
+<button class="btn ghost" id="csv">Download CSV</button>
+<button class="btn ghost" onclick="print()">Print</button>
+</div>
+</div></div>
+
+<main><div class="wrap">
+<div class="panel" id="cmuPanel">
+<h2>Central Methodist cheer: what's known</h2>
+<div>CMU's 2026-27 competition schedule isn't posted yet. Their season usually runs January to April and ends at the NCA College Nationals in Daytona Beach, Fla. Recent results are in the list below (choose <b>Everything (incl. past)</b>).</div>
+<ul>
+<li><a href="https://cmueagles.prestosports.com/sports/cheer/headlines-featured" target="_blank" rel="noopener">CMU Competitive Cheer news and results</a></li>
+<li><a href="https://cmueagles.prestosports.com/sports/stunt/headlines-featured" target="_blank" rel="noopener">CMU STUNT news and results</a></li>
+</ul>
+</div>
+<div class="count" id="count"></div>
+<div id="list"></div>
+</div></main>
+
+<footer><div class="wrap">
+<b>Panthers &amp; Eagles <span id="ver"></span></b> · Snapshot, not live: always confirm with the source before driving to an event.
+Sources: <a href="https://websites.eventlink.com/s/oak-grove-high-school/Events" target="_blank" rel="noopener">Oak Grove district activities calendar (EventLink)</a> ·
+<a href="https://cmueagles.prestosports.com/sports/cheer/headlines-featured" target="_blank" rel="noopener">CMU Athletics</a>.
+Not affiliated with either school.
+<details><summary>How this works, and tests</summary>
+<p>Events were copied from each school's public pages into this page on the date shown at the top. Oak Grove times are Central time. "(H)" = home, "(A)" = away, as the district lists them. Middle-school cheer listed at two gyms for Nov 30 is shown once with both places. Version 2 will refresh automatically each night.</p>
+<p id="tests"></p>
+</details>
+</div></footer>
+
+<script>
+/* VERSION: change these two lines for each release, and add a line to CHANGELOG.md */
+const APP_VERSION='1.0', SNAPSHOT='November 24, 2026, 11 PM CT', SNAP_THROUGH='2026-12-08';
+const OG_URL='https://websites.eventlink.com/s/oak-grove-high-school/Events';
+const CMU_CHEER='https://cmueagles.prestosports.com/sports/cheer/headlines-featured';
+const CMU_STUNT='https://cmueagles.prestosports.com/sports/stunt/headlines-featured';
+// [date, time ('' = TBD, 'all' = all day), title, category, level, team, H/A, location, source]
+// level: hs | ms | college | other ; category: sports | cheer | arts | academic | school
+const RAW=[
+['2026-11-23','all','No School (Thanksgiving Break)','school','other','District','','','og'],
+['2026-11-24','16:00','Basketball practice','sports','other','Special Olympics','','Elementary Cafeteria','og'],
+['2026-11-24','16:30','Lone Jack MS/HS Invitational','sports','hs','Wrestling · Girls varsity','A','Lone Jack Elem.','og'],
+['2026-11-24','17:30','at Lafayette Co. High','sports','hs','Basketball · Girls JV','A','Lafayette Co. High','og'],
+['2026-11-24','19:00','at Lafayette Co. High','sports','hs','Basketball · Girls varsity','A','Lafayette Co. High','og'],
+['2026-11-26','16:00','Basketball practice','sports','other','Special Olympics','','Elementary Cafeteria','og'],
+['2026-11-30','17:00','at Warrensburg MS (double header)','sports','ms','Basketball · Girls 7th/8th','A','Warrensburg Middle School','og'],
+['2026-11-30','17:00','vs Warrensburg MS','cheer','ms','Cheer · Coed middle school','H','Oak Grove Middle School Gym (also listed at Oak Grove High School)','og'],
+['2026-11-30','17:00','vs Warrensburg MS (double header)','sports','ms','Basketball · Boys 7th/8th','H','Oak Grove Middle School Gym','og'],
+['2026-11-30','19:30','Platte County HS Tournament','sports','hs','Basketball · Girls varsity','A','Winnetonka Senior High School','og'],
+['2026-12-01','14:40','Scholar Bowl practice','academic','hs','Scholar Bowl','','High School Media Center','og'],
+['2026-12-01','16:00','Basketball practice','sports','other','Special Olympics','','Elementary Cafeteria','og'],
+['2026-12-01','16:30','at North Platte Jr./High School','sports','hs','Basketball · Boys C team','A','North Platte Jr./High School','og'],
+['2026-12-01','17:00','at Pleasant Hill MS','sports','ms','Wrestling · Boys middle school','A','Pleasant Hill Middle School','og'],
+['2026-12-01','17:00','at Pleasant Hill MS','sports','ms','Wrestling · Girls middle school','A','Pleasant Hill Middle School','og'],
+['2026-12-01','17:30','at North Platte Jr./High School','sports','hs','Basketball · Boys JV','A','North Platte Jr./High School','og'],
+['2026-12-01','19:00','at North Platte Jr./High School','sports','hs','Basketball · Boys varsity','A','North Platte Jr./High School','og'],
+['2026-12-02','09:00','D.A.R.E. graduation practice','school','other','Elementary','','Performing Arts Center','og'],
+['2026-12-02','17:00','at Richmond High School','sports','ms','Wrestling · Boys middle school','A','Richmond High School','og'],
+['2026-12-02','17:00','at Richmond High School','sports','ms','Wrestling · Girls middle school','A','Richmond High School','og'],
+['2026-12-02','17:00','at Pleasant Hill MS (double header)','sports','ms','Basketball · Boys 7th/8th','A','Pleasant Hill Middle School','og'],
+['2026-12-02','17:00','at Richmond High School','sports','hs','Wrestling · Boys varsity','A','Richmond High School','og'],
+['2026-12-02','17:00','vs Pleasant Hill MS','cheer','ms','Cheer · Coed middle school','H','Oak Grove Middle School Gym','og'],
+['2026-12-02','17:00','vs Pleasant Hill MS (double header)','sports','ms','Basketball · Girls 7th/8th','H','Oak Grove Middle School Gym','og'],
+['2026-12-02','17:30','at Richmond High School','sports','hs','Wrestling · Boys JV','A','Richmond High School','og'],
+['2026-12-02','17:30','at Richmond High School','sports','hs','Wrestling · Girls varsity','A','Richmond High School','og'],
+['2026-12-02','19:30','Winnetonka Tournament','sports','hs','Basketball · Girls varsity','A','Winnetonka Senior High School','og'],
+['2026-12-03','','Winnetonka Tournament','sports','hs','Basketball · Girls varsity','A','Winnetonka Senior High School','og'],
+['2026-12-03','14:40','Scholar Bowl practice','academic','hs','Scholar Bowl','','High School Media Center','og'],
+['2026-12-03','16:00','Basketball practice','sports','other','Special Olympics','','Elementary Cafeteria','og'],
+['2026-12-03','17:00','at Center MS (double header)','sports','ms','Basketball · Girls 7th/8th','A','Center Middle School','og'],
+['2026-12-03','17:00','vs Center MS (double header)','sports','ms','Basketball · Boys 7th/8th','H','Oak Grove Middle School Gym','og'],
+['2026-12-03','17:00','vs Center MS','cheer','ms','Cheer · Coed middle school','H','Oak Grove Middle School Gym','og'],
+['2026-12-03','17:00','JV Scramble at Pleasant Hill (quad)','sports','hs','Wrestling · Boys JV','A','Pleasant Hill High','og'],
+['2026-12-03','17:45','D.A.R.E. Elementary','school','other','Elementary','','Performing Arts Center','og'],
+['2026-12-03','18:00','Jingle on the Green','arts','hs','Choir · High school','','State Fair Community College','og'],
+['2026-12-04','','Winnetonka Tournament','sports','hs','Basketball · Girls varsity','A','Winnetonka Senior High School','og'],
+['2026-12-04','16:00','Speech & Debate at Truman HS','academic','hs','Speech & Debate · Varsity','A','Truman HS','og'],
+['2026-12-04','16:00','Speech & Debate at William Chrisman HS','academic','hs','Speech & Debate · Novice','A','William Chrisman HS','og'],
+['2026-12-04','16:30','vs Moberly Sr. High','sports','hs','Basketball · Boys C team','H','Oak Grove High School Main Gym','og'],
+['2026-12-04','17:30','vs Moberly Sr. High','sports','hs','Basketball · Boys JV','H','Oak Grove High School Main Gym','og'],
+['2026-12-04','19:00','Pep Band performs','arts','hs','Band','H','Oak Grove High School Main Gym','og'],
+['2026-12-04','19:00','vs Moberly Sr. High','sports','hs','Basketball · Boys varsity','H','Oak Grove High School Main Gym','og'],
+['2026-12-05','all','Speech & Debate at Truman HS','academic','hs','Speech & Debate · Varsity','A','Truman HS','og'],
+['2026-12-05','all','All-State Band Auditions','arts','hs','Band','A','Columbia, Mo.','og'],
+['2026-12-05','all','Speech & Debate at William Chrisman HS','academic','hs','Speech & Debate · Novice','A','William Chrisman HS','og'],
+['2026-12-05','09:00','Pleasant Hill Tournament','sports','hs','Wrestling · Boys varsity','A','Pleasant Hill High','og'],
+['2026-12-07','','Belton High School Invitational','sports','hs','Wrestling · Boys JV','A','Belton High School','og'],
+['2026-12-07','','Richmond High School Tournament','sports','hs','Basketball · Boys C team','A','Richmond High School','og'],
+['2026-12-07','14:45','PTO Holiday Shop','school','other','Elementary','','','og'],
+['2026-12-07','16:00','at Excelsior Springs MS','sports','ms','Wrestling · Boys middle school','A','Excelsior Springs High School','og'],
+['2026-12-07','16:00','at Excelsior Springs MS','sports','ms','Wrestling · Girls middle school','A','Excelsior Springs High School','og'],
+['2026-12-07','17:00','at Clinton MS (double header)','sports','ms','Basketball · Boys 7th/8th','A','Clinton Middle School','og'],
+['2026-12-07','17:00','vs Clinton MS','cheer','ms','Cheer · Coed middle school','H','Oak Grove Middle School Gym','og'],
+['2026-12-07','17:00','vs Clinton MS (double header)','sports','ms','Basketball · Girls 7th/8th','H','Oak Grove Middle School Gym','og'],
+['2026-12-07','17:30','vs Cameron HS (tournament)','sports','hs','Basketball · Girls varsity','A','Lafayette Co. High','og'],
+['2026-12-08','','Lafayette Co. High Tournament','sports','hs','Basketball · Girls varsity','A','Lafayette Co. High','og'],
+['2026-12-08','','Richmond High School Tournament','sports','hs','Basketball · Boys C team','A','Richmond High School','og'],
+['2026-12-08','09:00','Elementary music practice','arts','other','Elementary','','Performing Arts Center','og'],
+// Central Methodist (past season results; 2026-27 schedule not yet posted)
+['2026-02-06','','Quincy Kickoff Tournament: beat St. Norbert 10-0; lost to Quincy 20-19 (3OT)','cheer','college','CMU STUNT','A','Quincy, Ill.','cmu',CMU_STUNT],
+['2026-02-07','','Quincy Kickoff Tournament: beat Buena Vista 8-0','cheer','college','CMU STUNT','A','Quincy, Ill.','cmu',CMU_STUNT],
+['2026-02-21','all','CMU STUNT home tournament vs Drury, Maryville, Missouri Valley (Feb 21-22)','cheer','college','CMU STUNT','H','Puckett Field House, Fayette','cmu',CMU_STUNT],
+['2026-04-10','all','NCA Collegiate Cheer National Championship: 2nd in Intermediate Small Coed NAIA finals','cheer','college','CMU Competitive Cheer','A','Daytona Beach, Fla.','cmu','https://cmueagles.com/sports/cheer/2025-26/releases/20260412feo0er'],
+['2026-04-17','all','College STUNT National Championship (Apr 17-19)','cheer','college','CMU STUNT','A','Oklahoma','cmu',CMU_STUNT]
+];
+const EVENTS=RAW.map((r,i)=>({id:i,date:r[0],time:r[1],title:r[2],cat:r[3],lvl:r[4],team:r[5],ha:r[6],loc:r[7],src:r[8],url:r[9]||(r[8]==='og'?OG_URL:CMU_CHEER)}));
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function nowCT(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const g=t=>p.find(x=>x.type===t).value;return `${g('year')}-${g('month')}-${g('day')}`}
+const addDays=(k,n)=>{const d=new Date(k+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const fmtDay=k=>new Date(k+'T12:00:00Z').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'UTC'});
+function fmtTime(t){if(t==='all')return 'All day';if(!t)return 'TBD';let[h,m]=t.split(':').map(Number);const ap=h>=12?'PM':'AM';h=h%12||12;return `${h}:${String(m).padStart(2,'0')} ${ap}`}
+
+const state={src:'all',cat:'',lvl:'',ha:'',when:'up',q:''};
+function visible(today){
+  const q=state.q.trim().toLowerCase();
+  return EVENTS.filter(e=>{
+    if(state.src==='og'&&e.src!=='og')return false;
+    if(state.src==='cmu'&&e.src!=='cmu')return false;
+    if(state.src==='cheer'&&e.cat!=='cheer')return false;
+    if(state.cat&&e.cat!==state.cat)return false;
+    if(state.lvl&&e.lvl!==state.lvl)return false;
+    if(state.ha&&e.ha!==state.ha)return false;
+    if(state.when==='up'&&e.date<today)return false;
+    if(state.when==='week'&&(e.date<today||e.date>addDays(today,6)))return false;
+    if(q&&!(e.title+' '+e.team+' '+e.loc).toLowerCase().includes(q))return false;
+    return true;
+  }).sort((a,b)=>a.date.localeCompare(b.date)||(a.time==='all'?'00':a.time||'99').localeCompare(b.time==='all'?'00':b.time||'99'));
+}
+function render(){
+  const today=nowCT(), L=visible(today);
+  $('#count').textContent=`${L.length} event${L.length===1?'':'s'} shown · Oak Grove listings run through ${fmtDay(SNAP_THROUGH)}`;
+  if(!L.length){$('#list').innerHTML=`<div class="empty">Nothing matches.${state.src==='cmu'&&state.when!=='all'?' CMU has no 2026-27 dates posted yet. Choose "Everything (incl. past)" to see last season.':' Try fewer filters.'}</div>`;return}
+  let html='',last='';
+  for(const e of L){
+    if(e.date!==last){html+=`<div class="day">${fmtDay(e.date)}${e.date===today?' <small>Today</small>':''}</div>`;last=e.date}
+    const tags=[`<span class="tag ${e.src==='cmu'?'cmu':''}">${e.src==='cmu'?'Central Methodist':'Oak Grove'}</span>`];
+    if(e.cat==='cheer')tags.push('<span class="tag cheer">Cheer</span>');
+    if(e.ha==='H')tags.push('<span class="tag h">Home</span>');else if(e.ha==='A')tags.push('<span class="tag">Away</span>');
+    html+=`<div class="ev ${e.src==='cmu'?'cmu':''} ${e.date<today?'past':''}"><div class="t">${fmtTime(e.time)}</div><div><div class="ti">${esc(e.team)}: ${esc(e.title)}</div><div class="meta">${esc(e.loc||'Location not listed')} · <a href="${esc(e.url)}" target="_blank" rel="noopener">source</a></div><div class="tags">${tags.join('')}</div></div><button class="ical" data-id="${e.id}" aria-label="Add to calendar">+ Calendar</button></div>`;
+  }
+  $('#list').innerHTML=html;
+}
+// ---- calendar (.ics) and CSV ----
+function utcStamp(date,time){const[h,m]=time.split(':').map(Number);const d=new Date(Date.UTC(+date.slice(0,4),+date.slice(5,7)-1,+date.slice(8,10),h,m));
+  // Central time: CDT (UTC-5) from 2nd Sunday of March to 1st Sunday of November, else CST (UTC-6)
+  const y=+date.slice(0,4),dst0=nthSunday(y,2,2),dst1=nthSunday(y,10,1);const off=(date>=dst0&&date<dst1)?5:6;d.setUTCHours(d.getUTCHours()+off);return d.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z'}
+function nthSunday(y,month,n){const d=new Date(Date.UTC(y,month,1));const first=(7-d.getUTCDay())%7;return new Date(Date.UTC(y,month,1+first+7*(n-1))).toISOString().slice(0,10)}
+const icsText=s=>String(s).replace(/\\/g,'\\\\').replace(/[,;]/g,m=>'\\'+m).replace(/\n/g,'\\n');
+function ics(list){
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Panthers and Eagles//EN','CALSCALE:GREGORIAN'];
+  const stamp=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+  for(const e of list){
+    L.push('BEGIN:VEVENT',`UID:pe-${e.date}-${e.id}@panthers-eagles`,`DTSTAMP:${stamp}`);
+    if(e.time&&e.time!=='all'){L.push(`DTSTART:${utcStamp(e.date,e.time)}`,`DURATION:PT2H`)}
+    else{L.push(`DTSTART;VALUE=DATE:${e.date.replace(/-/g,'')}`,`DTEND;VALUE=DATE:${addDays(e.date,1).replace(/-/g,'')}`)}
+    L.push(`SUMMARY:${icsText((e.src==='og'?'Oak Grove ':'CMU ')+e.team+': '+e.title+(e.time===''?' (time TBD)':''))}`);
+    if(e.loc)L.push(`LOCATION:${icsText(e.loc)}`);
+    L.push(`DESCRIPTION:${icsText('Snapshot '+SNAPSHOT+'. Confirm at '+e.url)}`,`URL:${e.url}`,'END:VEVENT');
+  }
+  L.push('END:VCALENDAR');return L.join('\r\n')+'\r\n';
+}
+let DL=null;
+async function download(name,text,type){
+  if(!window.claude){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);return}
+  try{if(!DL&&window.claude.use)DL=await window.claude.use('downloads');if(DL)await DL.save({filename:name,data:text})}catch(e){if(!(e&&(e.code==='declined'||e.code==='rate_limited')))alert('Downloads are not available here. Open the app on its own website to save files.')}
+}
+function csv(list){const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;return ['School,Date,Time,Team,Event,Home/Away,Location,Source'].concat(list.map(e=>[e.src==='og'?'Oak Grove':'Central Methodist',e.date,fmtTime(e.time),e.team,e.title,e.ha==='H'?'Home':e.ha==='A'?'Away':'',e.loc,e.url].map(q).join(','))).join('\r\n')+'\r\n'}
+
+// ---- wiring ----
+$('#srcRow').addEventListener('click',ev=>{const b=ev.target.closest('[data-src]');if(!b)return;state.src=b.dataset.src;document.querySelectorAll('#srcRow .chip').forEach(c=>c.setAttribute('aria-pressed',c===b));render()});
+for(const id of['cat','lvl','ha','when'])$('#'+id).addEventListener('change',e=>{state[id]=e.target.value;render()});
+$('#q').addEventListener('input',e=>{state.q=e.target.value;render()});
+$('#list').addEventListener('click',ev=>{const b=ev.target.closest('.ical');if(!b)return;const e=EVENTS[+b.dataset.id];download(`event-${e.date}.ics`,ics([e]),'text/calendar')});
+$('#icsAll').addEventListener('click',()=>{const L=visible(nowCT());if(L.length)download('panthers-eagles.ics',ics(L),'text/calendar')});
+$('#csv').addEventListener('click',()=>download(`panthers-eagles-${nowCT()}.csv`,csv(visible(nowCT())),'text/csv'));
+$('#asof').textContent=`Snapshot taken ${SNAPSHOT}. Oak Grove: ${EVENTS.filter(e=>e.src==='og').length} listings. CMU: last season's results; 2026-27 dates not yet posted.`;
+$('#ver').textContent=APP_VERSION;
+
+// ---- built-in tests ----
+function runTests(){
+  const T=[];const t=(n,f)=>{let ok=false;try{ok=!!f()}catch(e){}T.push([n,ok])};
+  t('Every event has a valid date and category',()=>EVENTS.every(e=>/^\d{4}-\d{2}-\d{2}$/.test(e.date)&&['sports','cheer','arts','academic','school'].includes(e.cat)));
+  t('Times are HH:MM, all-day or TBD',()=>EVENTS.every(e=>e.time===''||e.time==='all'||/^\d{2}:\d{2}$/.test(e.time)));
+  t('No exact duplicate listings',()=>new Set(EVENTS.map(e=>[e.date,e.time,e.team,e.title].join('|'))).size===EVENTS.length);
+  t('December 5:00 PM CT is 23:00 UTC',()=>utcStamp('2026-12-02','17:00')==='20261202T230000Z');
+  t('April 6:00 PM CT is 23:00 UTC (daylight time)',()=>utcStamp('2027-04-09','18:00')==='20270409T230000Z');
+  t('Calendar file is well formed',()=>{const s=ics(EVENTS);return s.startsWith('BEGIN:VCALENDAR')&&s.trim().endsWith('END:VCALENDAR')&&(s.match(/BEGIN:VEVENT/g)||[]).length===EVENTS.length});
+  t('All-cheer filter returns only cheer',()=>{const o=state.src;state.src='cheer';const L=visible('2026-01-01');state.src=o;return L.length>0&&L.every(e=>e.cat==='cheer')});
+  t('Upcoming hides past events',()=>{const o=state.when;state.when='up';const L=visible('2026-12-03');state.when=o;return L.every(e=>e.date>='2026-12-03')});
+  t('CSV has a header and one row per event',()=>csv(EVENTS).trim().split('\r\n').length===EVENTS.length+1);
+  const pass=T.filter(x=>x[1]).length;
+  $('#tests').textContent=`${pass} of ${T.length} tests passing`+(pass<T.length?': FAILED '+T.filter(x=>!x[1]).map(x=>x[0]).join('; '):'.');
+  return T;
+}
+render();window.__tests=runTests();
+</script>
+</body>
+</html>
