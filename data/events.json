@@ -1,10 +1,10 @@
 {
- "generated": "2026-11-25T05:25:51.148Z",
- "through": "2027-01-08",
+ "generated": "2026-11-25T19:55:58.950Z",
+ "through": "2027-01-09",
  "sources": {
   "og": {
    "ok": true,
-   "count": 188
+   "count": 187
   },
   "cmu": {
    "ok": true,
@@ -24,54 +24,6 @@
    "",
    "og",
    "https://websites.eventlink.com/s/oak-grove-high-school/Event/6efd76c1-7b6b-48f7-a54d-ee6aa74022af"
-  ],
-  [
-   "2026-11-24",
-   "16:00",
-   "Special Olympics Basketball Practice",
-   "sports",
-   "other",
-   "Special Olympics",
-   "",
-   "Elementary Cafeteria",
-   "og",
-   "https://websites.eventlink.com/s/oak-grove-high-school/Event/3476e92c-2bff-477e-ba52-0d163747e152"
-  ],
-  [
-   "2026-11-24",
-   "16:30",
-   "at Lone Jack Middle/High School (invitational)",
-   "sports",
-   "hs",
-   "Wrestling · Girls varsity",
-   "A",
-   "Lone Jack Elem.",
-   "og",
-   "https://websites.eventlink.com/s/oak-grove-high-school/Event/ec35947a-6a0a-4d84-bbbb-e1cb86eeedcc"
-  ],
-  [
-   "2026-11-24",
-   "17:30",
-   "at Lafayette Co High",
-   "sports",
-   "hs",
-   "Basketball · Girls JV",
-   "A",
-   "Lafayette Co High",
-   "og",
-   "https://websites.eventlink.com/s/oak-grove-high-school/Event/7096d2cb-41ef-4021-ab83-6c5e6207c3f4"
-  ],
-  [
-   "2026-11-24",
-   "19:00",
-   "at Lafayette Co High",
-   "sports",
-   "hs",
-   "Basketball · Girls varsity",
-   "A",
-   "Lafayette Co High",
-   "og",
-   "https://websites.eventlink.com/s/oak-grove-high-school/Event/d3190b83-0f49-4e9a-96bd-f32f276f4781"
   ],
   [
    "2026-11-26",
@@ -672,18 +624,6 @@
    "Belton High School",
    "og",
    "https://websites.eventlink.com/s/oak-grove-high-school/Event/abf2822a-00c5-44fb-9448-860fe51c4dff"
-  ],
-  [
-   "2026-12-07",
-   "",
-   "at Richmond High School (tournament)",
-   "sports",
-   "hs",
-   "Basketball · Boys C team",
-   "A",
-   "Richmond High School",
-   "og",
-   "https://websites.eventlink.com/s/oak-grove-high-school/Event/f2cee80b-68b2-4ae4-b10b-bc9c058fecb1"
   ],
   [
    "2026-12-08",
@@ -1779,6 +1719,18 @@
   ],
   [
    "2026-12-30",
+   "",
+   "at ROLLA SR. HIGH (tournament)",
+   "sports",
+   "hs",
+   "Basketball · Boys varsity",
+   "A",
+   "Rolla Sr. High",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/e85d8553-0f2c-4894-9e8d-3f5c708c87fe"
+  ],
+  [
+   "2026-12-30",
    "all",
    "No School (Winter Break)",
    "school",
@@ -2268,6 +2220,42 @@
    "",
    "og",
    "https://websites.eventlink.com/s/oak-grove-high-school/Event/e1f892ff-8f77-481a-8a55-9360116df1de"
+  ],
+  [
+   "2027-01-09",
+   "",
+   "at Monett Tournament (tournament)",
+   "sports",
+   "hs",
+   "Wrestling · Boys varsity",
+   "A",
+   "Monett High",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/4d266c13-3fab-41ec-b7ce-e5b409405beb"
+  ],
+  [
+   "2027-01-09",
+   "all",
+   "Speech & Debate Novice @ Fort Osage HS",
+   "academic",
+   "hs",
+   "Speech and Debate",
+   "",
+   "",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/30e5db45-617f-4bf2-88db-08984b42d9fd"
+  ],
+  [
+   "2027-01-09",
+   "all",
+   "Speech & Debate Varsity @ Van Horn HS",
+   "academic",
+   "hs",
+   "Speech and Debate",
+   "",
+   "",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/a1a77461-6420-47ca-9551-5f607679ee6e"
   ],
   [
    "2027-02-15",
