@@ -20,6 +20,8 @@ t('Time reading: 12 PM, 12 AM, All Day',()=>R.parseOgTime('12:15 PM CST')==='12:
 const cmu=R.parseIcs(fs.readFileSync(path.join(__dirname,'fixtures','cmu-sample.ics'),'utf8'),'CMU','x');
 t('CMU feed: all-day event with location from description',()=>cmu[0][0]==='2027-04-08'&&cmu[0][1]==='all'&&cmu[0][7]==='Daytona Beach, Fla.'&&!cmu[0][2].startsWith('('));
 t('CMU feed: UTC time converted to Central, away game marked',()=>cmu[1][0]==='2027-02-12'&&cmu[1][1]==='18:00'&&cmu[1][6]==='A'&&cmu[1][7]==='Marshall, Mo.');
+t('Generic labels are sorted by what the event is',()=>{const a=R.teamFromLabel('Oak Grove High School','FFA Fall Awards Banquet'),b=R.teamFromLabel('Central Office','School Board Meeting'),c=R.teamFromLabel('Color Gaurd','Winter Guard Practice'),d=R.teamFromLabel('Band','MS Holiday Band Concert');
+  return a.cat==='academic'&&a.team==='High school'&&b.cat==='school'&&b.level==='other'&&b.team==='District'&&c.cat==='arts'&&c.team==='Color guard'&&d.cat==='arts'&&d.level==='ms'});
 t('Season label switches in July',()=>R.seasonFor(new Date('2026-11-24'))==='2026-27'&&R.seasonFor(new Date('2027-03-01'))==='2026-27'&&R.seasonFor(new Date('2027-08-01'))==='2027-28');
 
 // ---- page tests ----

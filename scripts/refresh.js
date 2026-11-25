@@ -25,16 +25,21 @@ function parseOgTime(s) { // "4:30 PM CST" -> "16:30"; "All Day" -> "all"; "TBD"
   const m = /(\d{1,2}):(\d{2})\s*([AP])M/i.exec(s); if (!m) return '';
   let h = +m[1] % 12; if (/p/i.test(m[3])) h += 12; return `${pad(h)}:${m[2]}`;
 }
-function teamFromLabel(label) { // "Basketball (G-V)" -> {team, level, cat}
-  const L = label.trim(), low = L.toLowerCase();
+const DISPLAY = { 'central office': 'District', 'oak grove high school': 'High school', 'color gaurd': 'Color guard', 'color guard': 'Color guard',
+  'choir-high school': 'Choir · High school', 'choir-middle school': 'Choir · Middle school', 'elementary event': 'Elementary', 'no school': 'District', 'early release': 'District' };
+function teamFromLabel(label, title = '') { // "Basketball (G-V)" -> {team, level, cat}; title helps with generic labels
+  const L = label.trim(), low = L.toLowerCase(), both = (low + ' ' + title.toLowerCase());
   let cat = 'sports';
   if (/cheer/.test(low)) cat = 'cheer';
-  else if (/band|choir|music|orchestra|theat|drama|art show|performing/.test(low)) cat = 'arts';
-  else if (/scholar|speech|debate|fbla|deca|ffa|academic|robotics|science|math|quiz|national honor/.test(low)) cat = 'academic';
-  else if (/no school|elementary|pto|board|district|early release|conference|graduation|enrollment|picture/.test(low)) cat = 'school';
+  else if (/band|choir|music|orchestra|guard|gaurd|theat|drama|concert|art show|performing/.test(both)) cat = 'arts';
+  else if (/scholar|speech|debate|fbla|deca|\bffa\b|academic|robotics|science olympiad|quiz|honor society|awards banquet/.test(both)) cat = 'academic';
+  else if (/no school|elementary|pto|board|district|central office|early release|conference|graduation|enrollment|picture|d\.?a\.?r\.?e/.test(both)) cat = 'school';
+  else if (/^oak grove high school$/.test(low)) cat = 'school';
   let level = 'hs';
-  if (/\bms\b|middle|7th|8th|6th/.test(low)) level = 'ms';
-  if (/elementary|special olympics|no school|pto|district|board/.test(low)) level = 'other';
+  const levelText = cat === 'sports' || cat === 'cheer' ? low : both;
+  if (/\bms\b|middle|7th|8th|6th/.test(levelText)) level = 'ms';
+  if (/elementary|special olympics|no school|pto|district|central office|board|early release/.test(levelText)) level = 'other';
+  if (DISPLAY[low]) return { team: DISPLAY[low], level, cat };
   const m = /^(.*?)\s*\((.*)\)\s*$/.exec(L);
   if (!m) return { team: L, level, cat };
   const sport = m[1].trim(), t = m[2].replace(/-/g, ' ').trim();
@@ -70,7 +75,7 @@ function parseOgPage(html) {
     const time = parseOgTime(dps[1] || '');
     const loc = cleanLocation((/<p[^>]*>([\s\S]*?)<\/p>/.exec(cells[3]) || [])[1]);
     const href = (/href="([^"]*\/Event\/[^"]*)"/.exec(row) || [])[1];
-    const { team, level, cat } = teamFromLabel(label || 'Event');
+    const { team, level, cat } = teamFromLabel(label || 'Event', name + ' ' + extra);
     let title = ha === 'A' ? `at ${name}` : ha === 'H' ? `vs ${name}` : name;
     if (extra) title += ` (${extra.toLowerCase()})`;
     out.push([date, time, title, cat, level, team, ha, loc, 'og', href ? OG_BASE + href : OG_EVENTS]);
