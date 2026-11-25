@@ -251,7 +251,7 @@ $('#csv').addEventListener('click',()=>download(`panthers-eagles-${nowCT()}.csv`
 function renderHeader(){
   const og=EVENTS.filter(e=>e.src==='og').length, today=nowCT(), cm=EVENTS.filter(e=>e.src==='cmu'&&e.date>=today);
   $('#asof').textContent=`${LIVE?'Updated':'Built-in copy from'} ${SNAPSHOT}${LIVE?' (refreshes every night)':''}. Oak Grove: ${og} listings. CMU: ${cm.length} upcoming date${cm.length===1?'':'s'}.`;
-  $('#cmuText').innerHTML=cm.length?`${cm.length} 2026-27 date${cm.length===1?'':'s'} posted so far. Next: <b>${esc(fmtDay(cm[0].date))}</b>, ${esc(cm[0].title)}${cm[0].loc?', '+esc(cm[0].loc):''}. Their competition season usually runs January to April; new dates appear here the night after CMU posts them.`:`No upcoming CMU dates are posted right now. Their competition season usually runs January to April and ends at the NCA College Nationals in Daytona Beach, Fla.`;
+  $('#cmuText').innerHTML=cm.length?`${cm.length} 2026-27 date${cm.length===1?'':'s'} posted so far. Next: <b>${esc(fmtDay(cm[0].date))}</b>, ${esc(cm[0].team)}: ${esc(cm[0].title)}${cm[0].loc?' ('+esc(cm[0].loc)+')':''}. Their competition season usually runs January to April; new dates appear here the night after CMU posts them.`:`No upcoming CMU dates are posted right now. Their competition season usually runs January to April and ends at the NCA College Nationals in Daytona Beach, Fla.`;
 }
 function applyData(d){
   if(!d||!Array.isArray(d.events)||!d.events.length)return false;
