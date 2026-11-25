@@ -1,0 +1,32 @@
+name: probe (temporary)
+on:
+  push:
+    branches: [probe]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch source pages once
+        run: |
+          mkdir -p raw
+          UA="Mozilla/5.0 (compatible; PanthersEaglesBot/1.0; +https://github.com/transcend-this/og-cmu-events)"
+          f() { code=$(curl -sL -A "$UA" -o "raw/$1" -w '%{http_code} %{content_type} %{size_download}' "$2"); echo "$1 $code $2" >> raw/index.txt; }
+          f og-events-1.html "https://websites.eventlink.com/s/oak-grove-high-school/Events"
+          f og-events-2.html "https://websites.eventlink.com/s/oak-grove-high-school/Events?pageNumber=2"
+          f og-home.html "https://websites.eventlink.com/s/oak-grove-high-school"
+          f cmu-cheer-2026-27.html "https://cmueagles.com/sports/cheer/2026-27/schedule"
+          f cmu-cheer-current.html "https://cmueagles.com/sports/cheer/schedule"
+          f cmu-cheer-presto.html "https://cmueagles.prestosports.com/sports/cheer/2026-27/schedule"
+          f cmu-stunt-2026-27.html "https://cmueagles.com/sports/stunt/2026-27/schedule"
+          f cmu-cheer-ics.ics "https://cmueagles.com/sports/cheer/2026-27/schedule?print=ical"
+          cat raw/index.txt
+      - name: Save results to this branch
+        run: |
+          git config user.name "probe-bot"
+          git config user.email "probe-bot@users.noreply.github.com"
+          git add raw
+          git commit -m "Probe results" || echo "nothing to commit"
+          git push
