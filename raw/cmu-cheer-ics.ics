@@ -1,0 +1,33 @@
+BEGIN:VCALENDAR
+REFRESH-INTERVAL;VALUE=DURATION:PT1H
+PRODID:-//www.prestosports.com//PrestoSports//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-PUBLISHED-TTL:PT1H
+X-WR-CALNAME:Central Methodist (MO)
+BEGIN:VEVENT
+DTSTAMP:20261123T152921Z
+DTSTART;VALUE=DATE:20270408
+SUMMARY:(Cheerleading) NCA National Championships - Intermediate Small Coed NAIA Preliminaries
+TRANSP:TRANSPARENT
+CATEGORIES:Cheerleading
+DESCRIPTION:Cheerleading: (Cheerleading) NCA National Championships - Intermediate Small Coed NAIA Preliminaries\, Daytona Beach\, Fla.
+STATUS:CONFIRMED
+LAST-MODIFIED:20261118T175121Z
+SEQUENCE:8878671
+UID:8fr8qp7t7kextyz1@prestosports.com
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261123T152921Z
+DTSTART;VALUE=DATE:20270409
+SUMMARY:(Cheerleading) NCA National Championships - Intermediate Small Coed NAIA Finals
+TRANSP:TRANSPARENT
+CATEGORIES:Cheerleading
+DESCRIPTION:Cheerleading: (Cheerleading) NCA National Championships - Intermediate Small Coed NAIA Finals\, Daytona Beach\, Fla.
+STATUS:CONFIRMED
+LAST-MODIFIED:20261118T175048Z
+SEQUENCE:8878670
+UID:h75e5n5ke31vluj5@prestosports.com
+END:VEVENT
+END:VCALENDAR
