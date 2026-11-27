@@ -1,10 +1,10 @@
 {
- "generated": "2026-11-26T19:36:49.216Z",
- "through": "2027-01-09",
+ "generated": "2026-11-27T19:27:33.827Z",
+ "through": "2027-01-11",
  "sources": {
   "og": {
    "ok": true,
-   "count": 187
+   "count": 193
   },
   "cmu": {
    "ok": true,
@@ -24,18 +24,6 @@
    "",
    "og",
    "https://websites.eventlink.com/s/oak-grove-high-school/Event/6efd76c1-7b6b-48f7-a54d-ee6aa74022af"
-  ],
-  [
-   "2026-11-26",
-   "16:00",
-   "Special Olympics Basketball Practice",
-   "sports",
-   "other",
-   "Special Olympics",
-   "",
-   "Elementary Cafeteria",
-   "og",
-   "https://websites.eventlink.com/s/oak-grove-high-school/Event/37b82813-f49d-48f7-9460-96cfffd3f0ab"
   ],
   [
    "2026-11-30",
@@ -626,6 +614,18 @@
    "https://websites.eventlink.com/s/oak-grove-high-school/Event/abf2822a-00c5-44fb-9448-860fe51c4dff"
   ],
   [
+   "2026-12-07",
+   "",
+   "at Richmond High School (tournament)",
+   "sports",
+   "hs",
+   "Basketball · Boys C team",
+   "A",
+   "Richmond High School",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/f2cee80b-68b2-4ae4-b10b-bc9c058fecb1"
+  ],
+  [
    "2026-12-08",
    "09:00",
    "Elementary music practice",
@@ -964,18 +964,6 @@
   [
    "2026-12-10",
    "",
-   "at Lafayette Co High (tournament)",
-   "sports",
-   "hs",
-   "Basketball · Girls varsity",
-   "A",
-   "Lafayette Co High",
-   "og",
-   "https://websites.eventlink.com/s/oak-grove-high-school/Event/b0399220-4fbd-4f6d-99f8-2deb847a5cac"
-  ],
-  [
-   "2026-12-10",
-   "",
    "at Richmond High School (tournament)",
    "sports",
    "hs",
@@ -991,11 +979,11 @@
    "at Lafayette Co High (tournament)",
    "sports",
    "hs",
-   "Basketball · Boys varsity",
+   "Basketball · Girls varsity",
    "A",
    "Lafayette Co High",
    "og",
-   "https://websites.eventlink.com/s/oak-grove-high-school/Event/0761a846-2080-4866-9672-f2db50bffbc1"
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/b0399220-4fbd-4f6d-99f8-2deb847a5cac"
   ],
   [
    "2026-12-11",
@@ -2256,6 +2244,90 @@
    "",
    "og",
    "https://websites.eventlink.com/s/oak-grove-high-school/Event/a1a77461-6420-47ca-9551-5f607679ee6e"
+  ],
+  [
+   "2027-01-11",
+   "17:00",
+   "at Ewing Marion Kauffman School",
+   "sports",
+   "ms",
+   "Basketball · Boys 7th/8th",
+   "A",
+   "Ewing Marion Kauffman School",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/ae1a4413-8934-4e79-969e-081665b03dae"
+  ],
+  [
+   "2027-01-11",
+   "17:00",
+   "at Ewing Marion Kauffman School",
+   "sports",
+   "ms",
+   "Basketball · Girls 7th/8th",
+   "A",
+   "Ewing Marion Kauffman School",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/c5ec2a08-3972-4349-ae20-6cd1d646f219"
+  ],
+  [
+   "2027-01-11",
+   "17:30",
+   "at Odessa High School",
+   "sports",
+   "hs",
+   "Wrestling · Boys JV",
+   "A",
+   "Odessa High School",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/f6719e3d-445c-43b8-8fcd-e2e4a127c6dc"
+  ],
+  [
+   "2027-01-11",
+   "17:30",
+   "at Odessa High School",
+   "sports",
+   "hs",
+   "Wrestling · Boys varsity",
+   "A",
+   "Odessa High School",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/455b35e8-2d25-4166-8a88-dfff01ae84ae"
+  ],
+  [
+   "2027-01-11",
+   "19:00",
+   "Winter Guard Practice",
+   "arts",
+   "hs",
+   "Color guard",
+   "",
+   "Elementary Cafeteria",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/77b819c7-2ae9-425c-a840-01b3d7d41f5f"
+  ],
+  [
+   "2027-01-11",
+   "",
+   "at Pleasant Hill Tourmament",
+   "sports",
+   "hs",
+   "Basketball · Girls varsity",
+   "A",
+   "Pleasant Hill High",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/a9ac836d-e966-4d60-9b6c-464dc51af293"
+  ],
+  [
+   "2027-01-11",
+   "",
+   "at Pleasant Hill High (tournament)",
+   "sports",
+   "hs",
+   "Basketball · Boys varsity",
+   "A",
+   "Pleasant Hill High",
+   "og",
+   "https://websites.eventlink.com/s/oak-grove-high-school/Event/c9c23aed-87aa-4224-a326-55d4948cddc4"
   ],
   [
    "2027-02-15",
